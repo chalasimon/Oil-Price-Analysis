@@ -1,6 +1,8 @@
 .vscode/
 .history/
 data/
+.venv/
+.vscode/
 .idea/
 *.sublime-workspace
 *.sublime-project
