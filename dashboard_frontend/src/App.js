@@ -40,35 +40,62 @@ function App() {
   });
 
   return (
-    <div>
-      <h1>Oil Price Dashboard</h1>
-      <p>Backend status: {health ? health.message : 'Checking...'}</p>
-      <h2>Brent Oil Prices</h2>
-      <label>
-        Start Date:
-        <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
-      </label>
-      <label>
-        End Date:
-        <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
-      </label>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={mergedData}>
-          <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Line type="monotone" dataKey="volatility" stroke="#0c0a7eff" />
-          {events.map(event => (
-            <ReferenceLine
-              key={event.Start_Date}
-              x={event.Start_Date ? event.Start_Date.split('T')[0] : event.start_date}
-              stroke="red"
-              label={event.Description || event.description}
-            />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
+    <div style={{ background: '#f7f9fa', minHeight: '100vh', padding: '32px' }}>
+      <div style={{ maxWidth: 800, margin: '0 auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '32px' }}>
+        <h1>Oil Price Dashboard</h1>
+        <p>Backend status: {health ? health.message : 'Checking...'}</p>
+        <h2>Brent Oil Prices</h2>
+        <label>
+          Start Date:
+          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+        </label>
+        <label>
+          End Date:
+          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+        </label>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={mergedData}>
+            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="volatility" stroke="#0c0a7eff" />
+            {events.map((event, idx) => {
+              // Generate a color for each event
+              const colors = [
+                '#d32f2f', '#1976d2', '#388e3c', '#fbc02d', '#7b1fa2', '#0288d1', '#c2185b', '#ffa000', '#689f38', '#303f9f'
+              ];
+              const color = colors[idx % colors.length];
+              return (
+                <ReferenceLine
+                  key={event.Start_Date || event.start_date}
+                  x={event.Start_Date ? event.Start_Date.split('T')[0] : event.start_date}
+                  stroke={color}
+                  label={null}
+                />
+              );
+            })}
+          </LineChart>
+        </ResponsiveContainer>
+        {/* Event legend below chart */}
+        <div style={{ marginTop: 24 }}>
+          <h3 style={{ fontSize: 16, color: '#0c0a7e', marginBottom: 8 }}>Event Legend</h3>
+          <ul style={{ listStyle: 'none', padding: 0 }}>
+            {events.map((event, idx) => {
+              const colors = [
+                '#d32f2f', '#1976d2', '#388e3c', '#fbc02d', '#7b1fa2', '#0288d1', '#c2185b', '#ffa000', '#689f38', '#303f9f'
+              ];
+              const color = colors[idx % colors.length];
+              return (
+                <li key={event.Start_Date || event.start_date} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
+                  <span style={{ width: 16, height: 16, background: color, borderRadius: '50%', display: 'inline-block', marginRight: 8 }}></span>
+                  <span style={{ color: '#333', fontSize: 14 }}>{event.Description || event.description}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
