@@ -67,5 +67,20 @@ def get_events():
     event_list = event_data.to_dict(orient='records')
     return jsonify(event_list)
 
+
+# Volatility endpoint: returns rolling standard deviation of price
+@app.route('/api/volatility', methods=['GET'])
+def get_volatility():
+    window = 20  # 20-day rolling window
+    volatility = oil_data[['Date', 'Price']].copy()
+    volatility['volatility'] = volatility['Price'].rolling(window=window).std()
+    # Drop NaN values from the beginning
+    volatility = volatility.dropna()
+    result = [
+        {"date": row['Date'].strftime('%Y-%m-%d'), "volatility": row['volatility']}
+        for _, row in volatility.iterrows()
+    ]
+    return jsonify(result)
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

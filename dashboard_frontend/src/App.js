@@ -7,6 +7,7 @@ function App() {
   const [events, setEvents] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [volatility, setVolatility] = useState([]);
 
   useEffect(() => {
     fetch('/api/health')
@@ -20,6 +21,10 @@ function App() {
     fetch('/api/events')
       .then(res => res.json())
       .then(data => setEvents(data));
+
+    fetch('/api/volatility')
+      .then(res => res.json())
+      .then(data => setVolatility(data));
   }, []);
 
   const filteredPrices = prices.filter(p => {
@@ -27,7 +32,12 @@ function App() {
     const d = new Date(p.date);
     return (!startDate || d >= new Date(startDate)) && (!endDate || d <= new Date(endDate));
   });
-  
+
+  // Merge volatility data with filteredPrices by date
+  const mergedData = filteredPrices.map(p => {
+    const v = volatility.find(v => v.date === p.date);
+    return { ...p, volatility: v ? v.volatility : null };
+  });
 
   return (
     <div>
@@ -43,12 +53,12 @@ function App() {
         <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
       </label>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={filteredPrices}>
+        <LineChart data={mergedData}>
           <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
           <XAxis dataKey="date" />
           <YAxis />
           <Tooltip />
-          <Line type="monotone" dataKey="price" stroke="#8884d8" />
+          <Line type="monotone" dataKey="volatility" stroke="#0c0a7eff" />
           {events.map(event => (
             <ReferenceLine
               key={event.Start_Date}
