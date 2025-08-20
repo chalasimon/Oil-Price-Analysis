@@ -19,27 +19,60 @@ This project uses Bayesian change point analysis to detect structural shifts in 
 
 The notebook provides step-by-step code, plots, and business insights for each stage.
 
-## Getting Started
-To get started with this project, you'll need to have Python 3.13.3 installed, along with the required dependencies. You can set up a virtual environment and install the dependencies using the following commands:
+# Getting Started
+To get started with this project, you'll need Python 3.13.3 and Node.js installed. The project includes both a Jupyter notebook for analysis and an interactive dashboard (Flask backend + React frontend).
 
+### Python Environment & Analysis
+Set up a virtual environment and install dependencies:
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows use .venv\Scripts\activate
-source .venv/Scripts/activate  # On macOS/Linux
 pip install -r requirements.txt
 ```
+
+### Dashboard Setup (Flask + React)
+1. **Backend (Flask):**
+    - Navigate to `dashboard_backend` and run:
+      ```bash
+      python app.py
+      ```
+    - The backend serves API endpoints for prices, events, volatility, and change points.
+
+2. **Frontend (React):**
+    - Navigate to `dashboard_frontend` and run:
+      ```bash
+      npm install
+      npm start
+      ```
+    - The dashboard will be available at `http://localhost:3000` and connects to the Flask backend.
+
+### Features
+- Bayesian change point analysis and volatility clustering in Jupyter notebook
+- Interactive dashboard with:
+  - Oil price and volatility visualization
+  - Event overlays and legend
+  - Date range filtering
+  - Responsive UI (React + Recharts)
+  - Flask REST API for data and analysis results
 # Project Structure
 The project is structured as follows:
-
 ```
 Oil-Price-Analysis/
-├── .gitignore
-├── .vscode/
 ├── data/
+├── dashboard_backend/   # Flask backend
+│   └── app.py
+├── dashboard_frontend/  # React frontend
+│   └── src/
 ├── notebooks/
+│   └── bayesian_analysis.ipynb
 ├── src/
 │   ├── __init__.py
-│   ├── data_processing.py
+│   ├── DataLoader.py
+│   ├── data_cleaner.py
+│   ├── data_preprocessing.py
+│   ├── EDA.py
+│   ├── modeling.py
+│   ├── stationarity.py
 │   ├── visualization.py
 ├── requirements.txt
 ├── README.md
