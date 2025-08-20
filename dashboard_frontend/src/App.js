@@ -40,7 +40,7 @@ function App() {
   });
 
   return (
-    <div style={{ background: '#f7f9fa', minHeight: '100vh', padding: '32px' }}>
+    <div style={{ background: 'linear-gradient(135deg, #6e7a80ff 0%, #f5f7fa 100%)', minHeight: '100vh', padding: '32px' }}>
       <div style={{ maxWidth: 800, margin: '0 auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '32px' }}>
         <h1 style={{ color: '#0c0a7e', marginBottom: 8 }}>Oil Price Dashboard</h1>
         <p style={{ color: '#555', marginBottom: 24 }}>Backend status: <span style={{ color: health ? '#0c0a7e' : '#999' }}>{health ? health.message : 'Checking...'}</span></p>
