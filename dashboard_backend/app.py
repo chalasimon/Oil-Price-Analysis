@@ -25,8 +25,12 @@ event_data_path = "../data/event.csv"
 oil_data_loader = DataLoader(oil_data_path)
 event_data_loader = DataLoader(event_data_path)
 # load the data
+# load the data
 oil_data = oil_data_loader.load_data()
 event_data = event_data_loader.load_data()
+
+# Ensure Date column is datetime
+oil_data['Date'] = pd.to_datetime(oil_data['Date'])
 
 
 
