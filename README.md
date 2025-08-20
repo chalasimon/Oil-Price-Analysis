@@ -6,6 +6,19 @@ changes in Organization of the Petroleum Exporting Countries (OPEC) policies. Th
 to provide clear insights that can help investors, analysts, and policymakers understand
 and react to these price changes better.
 
+## Analysis Workflow
+This project uses Bayesian change point analysis to detect structural shifts in Brent oil prices and links these changes to major global events. The workflow includes:
+- Data loading and cleaning
+- Exploratory Data Analysis (EDA)
+- Stationarity testing and log returns transformation
+- Bayesian change point modeling (PyMC)
+- Volatility clustering visualization
+- Model diagnostics and convergence checks
+- Impact quantification (mean/variance before and after change points)
+- Event linkage and interpretation
+
+The notebook provides step-by-step code, plots, and business insights for each stage.
+
 ## Getting Started
 To get started with this project, you'll need to have Python 3.13.3 installed, along with the required dependencies. You can set up a virtual environment and install the dependencies using the following commands:
 
