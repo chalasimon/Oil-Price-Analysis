@@ -37,15 +37,13 @@ oil_data['Date'] = pd.to_datetime(oil_data['Date'])
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Sample data for demonstration
-prices = oil_data.copy()
+
 
 changepoints = [
     {"date": "2008-08-05", "mean_before": 0.0003, "mean_after": -0.0001, "var_before": 0.0005, "var_after": 0.0008}
     # ...  change points
 ]
 
-events = event_data.copy()
 
 @app.route('/api/health', methods=['GET'])
 def health():

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 function App() {
   const [health, setHealth] = useState(null);
   const [prices, setPrices] = useState([]);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     fetch('/api/health')
@@ -13,6 +14,10 @@ function App() {
     fetch('/api/prices')
       .then(res => res.json())
       .then(data => setPrices(data));
+
+    fetch('/api/events')
+      .then(res => res.json())
+      .then(data => setEvents(data));
   }, []);
 
   return (
@@ -27,6 +32,14 @@ function App() {
           <YAxis />
           <Tooltip />
           <Line type="monotone" dataKey="price" stroke="#8884d8" />
+          {events.map(event => (
+            <ReferenceLine
+              key={event.Start_Date}
+              x={event.Start_Date ? event.Start_Date.split('T')[0] : event.start_date}
+              stroke="red"
+              label={event.Description || event.description}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>
