@@ -5,6 +5,8 @@ function App() {
   const [health, setHealth] = useState(null);
   const [prices, setPrices] = useState([]);
   const [events, setEvents] = useState([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
     fetch('/api/health')
@@ -20,13 +22,28 @@ function App() {
       .then(data => setEvents(data));
   }, []);
 
+  const filteredPrices = prices.filter(p => {
+    if (!startDate && !endDate) return true;
+    const d = new Date(p.date);
+    return (!startDate || d >= new Date(startDate)) && (!endDate || d <= new Date(endDate));
+  });
+  
+
   return (
     <div>
       <h1>Oil Price Dashboard</h1>
       <p>Backend status: {health ? health.message : 'Checking...'}</p>
       <h2>Brent Oil Prices</h2>
+      <label>
+        Start Date:
+        <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+      </label>
+      <label>
+        End Date:
+        <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+      </label>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={prices}>
+        <LineChart data={filteredPrices}>
           <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
           <XAxis dataKey="date" />
           <YAxis />
